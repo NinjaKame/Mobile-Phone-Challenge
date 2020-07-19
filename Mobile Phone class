@@ -1,0 +1,162 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class MobilePhone {
+    private static Scanner iphoneX = new Scanner(System.in);
+    private ArrayList<Contacts> ContactList = new ArrayList<Contacts>();
+
+    private void addContact() {
+        System.out.println("Please input contact name:\r");
+        String name = iphoneX.nextLine();
+//        iphoneX.nextLine();
+//        int position = findContact(name);
+        if (findContact(name) >= 0) {
+            System.out.println("Contact already existed in the list.");
+        } else {
+            System.out.println("Please input contact phone number:\r");
+            int number = iphoneX.nextInt();
+//            iphoneX.nextLine();
+            Contacts newContact = new Contacts(name, number);
+            ContactList.add(newContact);
+            System.out.println("Added "+name+" successful.");
+        }
+    }
+
+    private void updateContact() {
+        System.out.println("Please input contact name that you want to update\r");
+        String name = iphoneX.nextLine();
+//        iphoneX.nextLine();
+        int position = findContact(name);
+        if (position >= 0) {
+            System.out.println("Please input contact new name\r");
+            String updateName = iphoneX.nextLine();
+            System.out.println("Please input contact new phone number\r");
+            int updateNumber = iphoneX.nextInt();
+            Contacts updateContact = new Contacts(updateName, updateNumber);
+            ContactList.set(position, updateContact);
+            System.out.println("Updated successful. "+ name +" was replaced by "+ updateName);
+        } else {
+            System.out.println("Can NOT find that contact, you stupid user!!!");
+        }
+    }
+
+    private void searchContact() {
+        System.out.println("Do you to search by name or by phone numbers?");
+        System.out.println("1: Phone number           2: Name");
+        byte answer = iphoneX.nextByte();
+        iphoneX.nextLine();
+        Contacts searchResult = new Contacts(null,-1);
+        if (answer == 1) {
+            System.out.println("Enter contact phone number you want to search:\r");
+            int searchNumber = iphoneX.nextInt();
+            for (int i = 0; i < ContactList.size(); i++) {
+                if (ContactList.get(i).getPhoneNumber() == searchNumber) {
+                    searchResult = ContactList.get(i);
+//                    result.add(searchResult);
+                    break;
+                }
+            }
+        } else {
+            System.out.println("Enter contact name you want to search:\r");
+            String name = iphoneX.nextLine();
+            int position = findContact(name);
+            System.out.println(name);
+            if (position >= 0) {
+                searchResult = ContactList.get(position);
+//                result.add(searchResult);
+            }
+        } if (searchResult.getPhoneNumber() != -1){
+            System.out.println("Found 1 contact in the list");
+            System.out.println("Name: "+ searchResult.getName() +"  Phone number: "+ searchResult.getPhoneNumber());
+        } else {
+            System.out.println("CAN NOT find that contact :(( So sorry!!!");
+        }
+//        System.out.println("Founded " + result.size() + " contacts in the list.");
+//        for (int i = 0; i < result.size(); i++) {
+//            Contacts printContact = result.get(i);
+//            System.out.println((i + 1) + ". " + printContact.getName() + ": " + printContact.getPhoneNumber());
+//            result.remove(i);
+//        }
+    }
+
+    private void printContact() {
+        System.out.println("You have " + ContactList.size() + " contacts in the list.");
+        for (int i = 0; i < ContactList.size(); i++) {
+            Contacts printContact = ContactList.get(i);
+            System.out.println((i + 1) + ". " + printContact.getName() + ": " + printContact.getPhoneNumber());
+        }
+    }
+
+    private int findContact(String name) {
+        for (int i = 0; i < ContactList.size(); i++) {
+            Contacts contacts = ContactList.get(i);
+            String listName = contacts.getName();
+            if (listName.equalsIgnoreCase(name)) {
+//                System.out.println("true");
+                return i;
+            }
+        }
+//        System.out.println("not found");
+        return -1;
+    }
+
+    private void removeContact() {
+        System.out.println("Please input contact name that you want to delete:\r");
+        String name = iphoneX.nextLine();
+        int position = findContact(name);
+        if (position >= 0) {
+            ContactList.remove(position);
+            System.out.println("Removed successful");
+        } else {
+            System.out.println("Can NOT find that contact, you stupid user!!!");
+        }
+    }
+
+    private void MobileFunction(byte choice) {
+        switch (choice) {
+            case 0:
+                printContact();
+                break;
+            case 1:
+                addContact();
+                break;
+            case 2:
+                updateContact();
+                break;
+            case 3:
+                searchContact();
+                break;
+            case 4:
+                removeContact();
+                break;
+        }
+    }
+
+    public void MobileApp() {
+        System.out.println("Welcome to THANOS iPhone, the most powerful smartphone in the universe:");
+//        System.out.println("Press:");
+        System.out.println("0 - To print the list of contacts.");
+        System.out.println("1 - To add new contact to the list.");
+        System.out.println("2 - To update existed contacts in the list.");
+        System.out.println("3 - To search the contact you want.");
+        System.out.println("4 - To remove existed contacts in the list.");
+        System.out.println("5 - To shut down THANOS iPhone");
+        boolean quit = false;
+        byte choice = 0;
+        while (!quit) {
+            System.out.println("Enter your choice:\r");
+            choice = iphoneX.nextByte();
+            iphoneX.nextLine();
+            if (choice == 5) {
+                System.out.println("Bye bye byeeeeeee");
+                quit = true;
+            } else {
+                MobileFunction(choice);
+            }
+        }
+    }
+
+    public static void iPhone12(){
+
+    }
+}
